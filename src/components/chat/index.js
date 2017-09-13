@@ -5,6 +5,9 @@ import ChatHeader from "./Header";
 import ChatBody from "./Body";
 import ChatControls from "./Controls";
 
+import { connect } from 'react-redux'
+import { sendMessage } from '../../actions'
+
 class Chat extends Component {
   render() {
     return (
@@ -16,4 +19,5 @@ class Chat extends Component {
     );
   }
 }
+
 export default Chat;

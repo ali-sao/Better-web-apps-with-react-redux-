@@ -6,34 +6,18 @@ import { height } from "./utils/dimensions";
 import Chat from "./components/chat";
 import Messeges from "./components/messages";
 
+import { connect } from 'react-redux'
+import { sendMessage, messagesLoaded, messageReceived } from './actions'
+
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data: [],
-      loading: true,
-      chats: []
-    };
-    this.submitChat = this.submitChat.bind(this);
-  }
-  submitChat(text) {
-    const chats = this.state.chats.concat({
-      text,
-      rule: "sender",
-      key: Date.now()
-    });
-    this.setState({ chats });
-  }
+
   componentDidMount() {
     fetch("https://randomuser.me/api/?page=1&results=30", {
       method: "GET"
     }).then(response => {
       if (response.ok) {
         response.json().then(json => {
-          this.setState({
-            data: json.results,
-            loading: false
-          });
+          this.props.onMessagesLoaded(json.results)
         });
       }
     });
@@ -44,12 +28,7 @@ class App extends Component {
       }).then(response => {
         if (response.ok) {
           response.json().then(json => {
-            const chats = this.state.chats.concat({
-              text: json.text_out.replace("<h1>", "").replace("</h1>"),
-              rule: "reciever",
-              key: Date.now()
-            });
-            this.setState({ chats });
+            this.props.onMessageReceived(json.text_out)
           });
         }
       });
@@ -66,21 +45,21 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{ height }}>
-        {this.state.loading ? (
+        {this.props.loading ? (
           "Loading"
         ) : (
           <div>
             <Chat
               name={
-                this.state.data[0].name.first +
-                " " +
-                this.state.data[0].name.last
+                  this.props.data[0].name.first +
+                  " " +
+                  this.props.data[0].name.last
               }
-              time={this.state.data[0].registered}
-              chats={this.state.chats}
-              submit={this.submitChat}
+              time={this.props.data[0].registered}
+              chats={this.props.chats}
+              submit={this.props.onSendMessage.bind(this)}
             />
-            <Messeges data={this.state.data} />
+            <Messeges data={this.props.data} />
           </div>
         )}
       </div>
@@ -88,4 +67,27 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return state
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSendMessage: text => {
+      dispatch(sendMessage(text))
+    },
+    onMessagesLoaded: messages => {
+      dispatch(messagesLoaded(messages))
+    },
+    onMessageReceived: message => {
+      dispatch(messageReceived(message))
+    }
+  }
+}
+
+const AppContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+
+export default AppContainer;
