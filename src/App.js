@@ -185,7 +185,7 @@ class App extends Component {
             this.state.data.map(el => (
               <UserRow
                 avatar={el.picture.large}
-                userName={el.name.first + el.name.last}
+                userName={el.name.first + " " + el.name.last}
                 details={el.location.street}
                 key={el.login.salt}
               />
