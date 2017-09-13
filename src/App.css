@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  overflow: hidden;
 }
 /******Chat****/
 .chat {
@@ -38,12 +39,17 @@
   color: rgba(0, 0, 0, 0.4);
 }
 /**body**/
+.chat-body {
+  overflow: scroll;
+  width: 100%;
+  padding-bottom: 50px;
+}
 .chat-body div {
   margin-top: 10px;
   display: block;
   width: 100%;
   clear: both;
-  padding-right: 30px;
+  padding: 0 30px;
   box-sizing: border-box;
 }
 
@@ -58,6 +64,11 @@
 .chat-body .sender {
   float: right;
 }
+.chat-body .reciever {
+  float: left;
+  background: #f1f0f0;
+  color: #000;
+}
 
 /**controls**/
 .chat-controls {
@@ -67,6 +78,7 @@
   left: 0;
   border-top: solid 1px #eaeaea;
   width: 100%;
+  background: #fff;
 }
 
 .chat-controls form {

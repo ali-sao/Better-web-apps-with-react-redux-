@@ -95,7 +95,7 @@ class ChatControls extends Component {
 class Chat extends Component {
   render() {
     return (
-      <div className="chat" style={{ height }}>
+      <div className="chat" style={{ height, width: width - 360 }}>
         <ChatHeader name={this.props.name} time={this.props.time} />
         <ChatBody chats={this.props.chats} />
         <ChatControls submit={this.props.submit} />
@@ -135,6 +135,23 @@ class App extends Component {
         });
       }
     });
+
+    setInterval(() => {
+      fetch("http://www.randomtext.me/api/gibberish/h1/1-11", {
+        method: "GET"
+      }).then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            const chats = this.state.chats.concat({
+              text: json.text_out.replace("<h1>", "").replace("</h1>"),
+              rule: "reciever",
+              key: Date.now()
+            });
+            this.setState({ chats });
+          });
+        }
+      });
+    }, (Math.random() * 10 + 5) * 1000);
 
     ReactDOM.findDOMNode(this).addEventListener(
       "click",
