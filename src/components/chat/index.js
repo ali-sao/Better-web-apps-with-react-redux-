@@ -14,10 +14,30 @@ class Chat extends Component {
       <div className="chat" style={{ height, width: width - 360 }}>
         <ChatHeader name={this.props.name} time={this.props.time} />
         <ChatBody chats={this.props.chats} />
-        <ChatControls submit={this.props.submit} />
+        <ChatControls submit={this.props.onSendMessage} />
       </div>
     );
   }
 }
 
-export default Chat;
+const mapStateToProps = state => {
+  return {
+    name: state.name,
+    chats: state.chats
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSendMessage: text => {
+      dispatch(sendMessage(text))
+    }
+  }
+}
+
+const ChatContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Chat)
+
+export default ChatContainer;

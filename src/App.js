@@ -49,17 +49,8 @@ class App extends Component {
           "Loading"
         ) : (
           <div>
-            <Chat
-              name={
-                  this.props.data[0].name.first +
-                  " " +
-                  this.props.data[0].name.last
-              }
-              time={this.props.data[0].registered}
-              chats={this.props.chats}
-              submit={this.props.onSendMessage.bind(this)}
-            />
-            <Messeges data={this.props.data} />
+            <Chat />
+            <Messeges />
           </div>
         )}
       </div>
